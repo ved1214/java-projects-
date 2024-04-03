@@ -1,0 +1,134 @@
+import java.util.Scanner;
+public class bminew
+{
+    public static void main(String[] args) 
+    {      
+        Scanner scanner = new Scanner(System.in);
+                                                                                                // Here the code starts //
+
+        try {
+            System.out.println("-------------------------------------------");
+            System.out.println("|      Welcome to the BMI Calculator      |");
+            System.out.println("-------------------------------------------\n");
+            System.out.println("-----------------------------------");
+            System.out.println("|       Choose weight units:      |");
+            System.out.println("-----------------------------------");
+            System.out.println("|    1. Kilograms or 2. Pounds    |");
+            System.out.println("-----------------------------------");
+            System.out.print("Enter your choice: ");
+
+
+                                                                                                // Here it catches the invalid input for weight selection //
+            int weightChoice = scanner.nextInt();
+            if (weightChoice != 1 && weightChoice != 2) {
+                throw new IllegalArgumentException("Incorrect weight type");
+            }
+
+            System.out.println("\n-------------------------------------------------------");
+            System.out.println("|                 Choose height units:                |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("|   1) Meters or 2) Feet & Inches or 3) Centimeters   |");
+            System.out.println("-------------------------------------------------------");
+            System.out.print("Enter your choice: ");
+            
+                                                                                                // Here it catches invalid input for height selection //
+            int heightChoice = scanner.nextInt();
+            if (heightChoice < 1 || heightChoice > 3) {
+                throw new IllegalArgumentException("Incorrect height option");
+            }
+                                                                                                // checks whether the weight is valid or not //
+            double weight = getWeight(scanner, weightChoice);
+            if (weight>160) 
+            {
+                throw new IllegalArgumentException("Invalid Weight");    
+            }
+            
+            double height = getHeight(scanner, heightChoice);
+            double bmi = calculateBMI(weight, height);
+           
+
+            System.out.println("\n+--------------------------------+");
+            System.out.println("|  Your BMI is: " + String.format("%.2f", bmi) + "            |");
+            System.out.println("|  BMI Category: " + interpretBMI(bmi) + "    |");
+            System.out.println("+--------------------------------+");
+            System.out.println();
+        } 
+        
+        catch (Exception e)
+            {
+                System.out.println("!! Error !! : " + e.getMessage());
+                System.out.println();
+            } 
+        finally 
+            {
+                scanner.close();
+            }
+    }
+
+                                                                                                // Here it claculates the BMI Of the user's input //
+    public static double calculateBMI(double weight, double height) 
+    {
+        return weight / (height * height);
+    }
+
+                                                                                                // Here it compares multiple BMI  //
+    public static String interpretBMI(double bmi)
+    {
+        if (0>=bmi ||bmi<=18.5)
+            return "Underweight";
+        else if (18.5>=bmi || bmi<=24.9)
+            return "Normal weight";
+        else if (24.9>=bmi|| bmi<=29.9)
+            return "Overweight";
+        else
+            return "Obese";
+    }
+
+                                                                                                // Here it verifys that which weight type is being selected //
+    public static double getWeight(Scanner scanner, int choice) 
+    {
+        double weight = 0.0;
+        switch (choice) 
+        {
+            case 1:
+                System.out.print("Enter your weight in kilograms: ");
+                weight = scanner.nextDouble();
+                break;
+            case 2:
+                System.out.print("Enter your weight in pounds: ");
+                double pounds = scanner.nextDouble();
+                weight = pounds * 0.453592;
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+        return weight;
+    }
+
+                                                                                                // Here it verifys that which height type is being selected  //
+    public static double getHeight(Scanner scanner, int choice) 
+    {
+        double height = 0.0;
+        switch (choice) 
+        {
+            case 1:
+                System.out.print("Enter your height in meters: ");
+                height = scanner.nextDouble();
+                break;
+            case 2:
+                System.out.print("Enter your height in feet: ");
+                double feet = scanner.nextDouble();
+                System.out.print("Enter your height in inches: ");
+                double inches = scanner.nextDouble();
+                height = (feet * 0.3048) + (inches * 0.0254);
+                break;
+            case 3:
+                System.out.print("Enter your height in centimeters: ");
+                height = scanner.nextDouble() / 100.0;
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+        return height;
+    }
+}
